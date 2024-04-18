@@ -10,8 +10,9 @@ typedef struct user
     char username[100];
     char password[100];
     char place[100];
-    int price;
     int numtick;
+    int price;
+    int total;
     struct user *next;
 }user;
 void ownpack();
@@ -33,7 +34,7 @@ char currentuser[100];
 
 int main()
 {
-    printf("\t\t\t\t\t==== || Super Tourisms || ====\n");
+    printf("\t\t\t\t\t==== || SUPER TOURISM || ====\n");
     user *h=NULL;
     int ch1,ch2;
     h=InitializeList(h);
@@ -43,7 +44,7 @@ int main()
         if(currentstate==menu)
         {
  printf("\033[0;32m");
-            printf("\n\n\t\t\t\t1: Admin Login\n\n\t\t\t\t2: Sign Up\n\n\t\t\t\t3: Sign In\n\n\t\t\t\t4: Brochure \n\n\t\t\t\t5: Exit\n\n\t\t\t\tEnter:");
+            printf("\n\n\t\t\t\t1: Admin Login\n\n\t\t\t\t2: Sign Up\n\n\t\t\t\t3: Sign In\n\n\t\t\t\t4: Brochure \n\n\t\t\t\t5: Exit\n\n\t\t\t\tEnter: ");
             scanf("%d",&ch1);
 
             switch(ch1)
@@ -73,7 +74,7 @@ int main()
         system("CLS");
  printf("\033[0;32m");
         printf("\n\t\t\t\t=========================");
-        printf("\n\t\t\t\tSUPER TOURISMS");
+        printf("\n\t\t\t\tSUPER TOURISM");
         printf("\n\t\t\t\t=========================\n");
             printf("\n\t\t\t\tBook Package - 1\n\t\t\t\tCreate Package - 2\n\t\t\t\tCheck Ticket - 3\n\t\t\t\tSave Ticket - 4\n\t\t\t\tCancel Ticket - 5\n\t\t\t\tChange Password - 6"                   "\n\t\t\t\tLogout User - 7\n\t\t\t\tBrochure - 8\n\t\t\t\tContact & Issue Registration - 9\n\t\t\t\tExit - 10\n");
             scanf("%d",&ch2);
@@ -144,11 +145,12 @@ void admin()
     char ch;
     char pwd[10];
     char a[30];
-    char a1[30]="super@534";
+    char a1[20]="admin@supertourism";
+    char a2[30]="super@534";
     printf("\nEnter Username: ");
     fflush(stdin);
     gets(a);
-    if(strcmp(a,"s")==0)
+    if(strcmp(a,a1)==0)
     {
        printf("\nEnter Password: ");
        for(i=0;i<10;i++)
@@ -161,9 +163,10 @@ void admin()
         break;
  }
  pwd[i]='\0';
-      if(strcmp(pwd,"s")==0)
+      if(strcmp(pwd,a2)==0)
       {
-          char s[30000];
+          char user_details[30000];
+          char issues[30000];
     int i;
     FILE *ap1,*ap2,*ap3;
     ap1=fopen("D:/users.txt","r+");
@@ -172,31 +175,31 @@ void admin()
     int a;
     while(1)
     {
-    printf("\n\n1.User Details");
-    printf("\n\n2.Issues Received");
-    printf("\n\n3.Logout");
+    printf("\n\n1. User Details");
+    printf("\n\n2. Issues Received");
+    printf("\n\n3. Logout");
     printf("\n\nYour Response: ");
     scanf("%d",&a);
 
     if(a==1)
     {
         printf("\n");
-        fread(s,sizeof(s),1,ap1);
-        puts(s);
+        fread(user_details,sizeof(user_details),1,ap1);
+        puts(user_details);
         currentstate==menu;
     }
     else if(a==2)
     {
 
         printf("\n");
-        fread(s,sizeof(s),1,ap2);
+        fread(issues,sizeof(issues),1,ap2);
         long result=ftell(ap2);
         if(result==0)
         {
             printf("No issues received yet.");
             currentstate==menu;
         }
-        puts(s);
+        puts(issues);
         currentstate==menu;
     }
     else if(a==3)
@@ -295,7 +298,7 @@ void ShowBrochure()
 {
     system("CLS");
     printf("\033[0;32m");
-    printf("  BROCHURE(with tour codes & price list)\n==========================================\n\n1. 11 - Jammu & Kashmir Tours - Rs.40000/-\n\n2. 14 - Grand Canyon Local Tours - Rs.60000/-\n\n3. 16 - Sri Lanka Local Tours - Rs.25000/-\n\n4. 19 - Miami Vacation - Rs.38000/\n\n""5. 21 - Hawaii - Rs.120000/-\n\n6. 24 - Goa Vacation - Rs.10000/-\n\n7. 26 - Australia & New Zealand Grand Tour - Rs.210000/-\n\n8. 29 - Alaska Vacation - Rs.32000/-\n\n9. 31 - Odisha & Kolkata Grand Vacation - Rs.45000/-\n\n10. 34 - Switzerland Tour -Rs.180000/-\n\n");
+    printf("  BROCHURE(with tour code & price list)\n==========================================\n\n1. 11 - Jammu & Kashmir Tours - Rs.40000/-\n\n2. 14 - Grand Canyon Local Tours - Rs.60000/-\n\n3. 16 - Sri Lanka Local Tours - Rs.25000/-\n\n4. 19 - Miami Vacation - Rs.38000/\n\n""5. 21 - Hawaii - Rs.120000/-\n\n6. 24 - Goa Vacation - Rs.10000/-\n\n7. 26 - Australia & New Zealand Grand Tour - Rs.210000/-\n\n8. 29 - Alaska Vacation - Rs.32000/-\n\n9. 31 - Odisha & Kolkata Grand Vacation - Rs.45000/-\n\n10. 34 - Switzerland Tour -Rs.180000/-\n\n");
 }
 
 void CheckTicket(user *h)
@@ -311,7 +314,7 @@ void CheckTicket(user *h)
         printf("You haven't booked any ticket yet.\n");
         return;
     }
-    printf("You have booked %d tickets for a sum total of Rs.%d/- for places: %s\n",h->numtick,h->price,h->place);
+    printf("You have booked %d tickets for a sum total of Rs.%d/- for places: %s\n",h->numtick,h->total,h->place);
 }
 
 user* AddUser(user* h)
@@ -321,7 +324,7 @@ user* AddUser(user* h)
     char pwd[10];
     user *t;
     t=h;
-   user *nw;
+    user *nw;
     nw=(user*)malloc(sizeof(user));
     printf("Enter username or email\n");
     scanf("%s",nw->username);
@@ -505,6 +508,7 @@ void BookTicket(user *h)
         return;
     strcpy(h->place,place);
     h->price=price;
+    h->total=(h->price*h->numtick);
     WriteToFile(t);
     printf("Bookings Done!!\n");
     system("PAUSE");
@@ -553,6 +557,7 @@ void ownpack(user* h)
     strcpy(h->place,place);
     h->numtick=numtick;
     h->price=price;
+    h->total=h->price;
     WriteToFile(t);
     printf("\nBookings Done Successfully!!\n");
     printf("\nYou Trip cost will be Rs.%d/-.\n",price);
@@ -578,8 +583,6 @@ void PrintTicket(user *h)
         printf("You do not have a ticket booked yet\n");
         return;
     }
-    int total=0.0;
-    total=(h->numtick);
     FILE *fp;
     char filename[50];
     strcpy(filename,h->username);
@@ -599,7 +602,7 @@ void PrintTicket(user *h)
     {
         fprintf(fp,"TOURISM TICKET\n===============\n\n");
     }
-    fprintf(fp,"Email ID: %s\nTour Code: %s\nTicket Cost: Rs %d\nNumber of tickets: %d\nTotal Cost: Rs %d\n",h->username,h->place,h->price,h->numtick,total);
+    fprintf(fp,"Email ID: %s\nTour Code: %s\nTicket Cost: Rs %d\nNumber of tickets: %d\nTotal Cost: Rs %d\n",h->username,h->place,h->price,h->numtick,h->total);
     fclose(fp);
 }
 void CancelTicket(user *h)
@@ -646,7 +649,7 @@ void CancelTicket(user *h)
     }
     if(flag==0)
     {
-        printf("Your ticket has been successfully cancelled\nA refund of Rs %d for Tour Code %s for %d tickets will soon be made to your original source of purchase\n",h->price,h->place,h->numtick);
+        printf("Your ticket has been successfully cancelled\nA refund of Rs %d for Tour Code %s for %d tickets will soon be made to your original source of purchase\n",h->total,h->place,h->numtick);
         strcpy(h->place,"N/A");
         h->price=0.0;
         h->numtick=0;
